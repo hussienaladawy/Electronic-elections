@@ -11,8 +11,8 @@
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h5 class="mb-0">قائمة الإشعارات</h5>
                 <div class="btn-group">
-                    <a href="{{ route('voter.notifications.markAllAsRead') }}" class="btn btn-sm btn-primary">تمييز الكل كمقروء</a>
-                    <form action="{{ route('voter.notifications.deleteAllRead') }}" method="POST" onsubmit="return confirm('هل أنت متأكد من حذف جميع الإشعارات المقروءة؟');">
+                    <a href="{{ route('assistant.notifications.markAllAsRead') }}" class="btn btn-sm btn-primary">تمييز الكل كمقروء</a>
+                    <form action="{{ route('assistant.notifications.deleteAllRead') }}" method="POST" onsubmit="return confirm('هل أنت متأكد من حذف جميع الإشعارات المقروءة؟');">
                         @csrf
                         <button type="submit" class="btn btn-sm btn-danger ms-2">حذف جميع المقروءة</button>
                     </form>
@@ -37,9 +37,9 @@
                                 <a href="{{ $notification->data['link'] }}" class="btn btn-sm btn-info">عرض</a>
                             @endif
                             @unless($notification->read_at)
-                                <a href="{{ route('voter.notifications.markAsRead', $notification->id) }}" class="btn btn-sm btn-success ms-2">تمييز كمقروء</a>
+                                <a href="{{ route('assistant.notifications.markAsRead', $notification->id) }}" class="btn btn-sm btn-success ms-2">تمييز كمقروء</a>
                             @endunless
-                            <form action="{{ route('voter.notifications.destroy', $notification->id) }}" method="POST" onsubmit="return confirm('هل أنت متأكد من حذف هذا الإشعار؟');" class="d-inline">
+                            <form action="{{ route('assistant.notifications.destroy', $notification->id) }}" method="POST" onsubmit="return confirm('هل أنت متأكد من حذف هذا الإشعار؟');" class="d-inline">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-sm btn-danger ms-2">حذف</button>

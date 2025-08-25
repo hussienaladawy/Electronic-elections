@@ -205,7 +205,7 @@
                         
                         {{-- Admin Specific Links --}}
                         @auth('admin')
-                            @can('manage users')
+                            
                             <li class="nav-item">
                                 <a class="nav-link {{ request()->route() && request()->routeIs('admin.dashboard') ? 'active' : '' }}" 
                                    href="{{ route('admin.dashboard') }}">
@@ -213,7 +213,7 @@
                                     لوحة التحكم
                                 </a>
                             </li>
-                            @endcan
+                            
                             
                             @can('manage admins')
                             <li class="nav-item">
@@ -257,7 +257,7 @@
                         
                         {{-- Assistant Specific Links --}}
                         @auth('assistant')
-                            @can('manage users')
+                            
                             <li class="nav-item">
                                 <a class="nav-link {{ request()->route() && request()->routeIs('assistant.dashboard') ? 'active' : '' }}" 
                                    href="{{ route('assistant.dashboard') }}">
@@ -265,7 +265,7 @@
                                     لوحة التحكم
                                 </a>
                             </li>
-                            @endcan
+                            
 
                             @can('manage voters')
                             <li class="nav-item">

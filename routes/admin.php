@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\NotificationController;
 
 // Admin Routes
 Route::prefix('admin')->name('admin.')->middleware(['auth:admin'])->group(function () {
@@ -58,6 +59,16 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:admin'])->group(functi
         Route::get('/export', [AdminController::class, 'exportAdmins'])->name('export');
         Route::post('/bulk-action', [AdminController::class, 'bulkActionAdmins'])->name('bulk-action');
     });
+
+    // Notifications
+    Route::prefix('notifications')->name('notifications.')->group(function () {
+        Route::get('/', [NotificationController::class, 'index'])->name('index');
+        Route::get('/mark-as-read/{notification}', [NotificationController::class, 'markAsRead'])->name('markAsRead');
+        Route::post('/mark-all-as-read', [NotificationController::class, 'markAllAsRead'])->name('markAllAsRead');
+        Route::delete('/{notification}', [NotificationController::class, 'destroy'])->name('destroy');
+        Route::post('/delete-all-read', [NotificationController::class, 'deleteAllRead'])->name('deleteAllRead');
+    });
+  
 });
 
 

@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\VoterController;
 use App\Http\Controllers\VotingController;
+use App\Http\Controllers\NotificationController;
 
 // Public routes for voter registration
 Route::prefix('voter')->name('voter.')->group(function () {
@@ -65,8 +66,11 @@ Route::prefix('voter')->middleware(['auth:voter'])->name('voter.')->group(functi
     });
 
     Route::prefix("notifications")->name("notifications.")->group(function () {
-        // Assuming a notifications method exists in VoterController
-        // Route::get("/", [VoterController::class, 'notifications'])->name("index"); 
+        Route::get('/', [NotificationController::class, 'index'])->name('index');
+        Route::get('/{notification}', [NotificationController::class, 'markAsRead'])->name('show');
+        Route::post('/mark-all-as-read', [NotificationController::class, 'markAllAsRead'])->name('markAllAsRead');
+        Route::delete('/{notification}', [NotificationController::class, 'destroy'])->name('destroy');
+        Route::post('/delete-all-read', [NotificationController::class, 'deleteAllRead'])->name('deleteAllRead');
     });
 
     Route::prefix("help")->name("help.")->group(function () {

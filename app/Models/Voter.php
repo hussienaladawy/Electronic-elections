@@ -12,7 +12,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class Voter extends Authenticatable
 {
     
-    use HasFactory, Notifiable, HasRoles;
+    use HasFactory, HasRoles, Notifiable;
 
     protected $table = 'voters';
 protected $guard_name = 'voter';
@@ -52,6 +52,14 @@ protected $guard_name = 'voter';
     ];
 
     // العلاقات
+    /**
+     * Get the entity's notifications.
+     */
+    public function notifications()
+    {
+        return $this->morphMany(Notification::class, 'notifiable')->orderBy('created_at', 'desc');
+    }
+
     public function createdBy()
     {
         return $this->belongsTo(SuperAdmin::class, 'created_by');

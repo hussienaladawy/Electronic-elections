@@ -7,16 +7,24 @@ use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Illuminate\Support\Facades\Hash;
 
-class VotersImport implements ToModel, WithHeadingRow
+use App\Models\Admin;
+use App\Models\SuperAdmin;
+use App\Notifications\NewVoterRegisteredNotification;
+use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Events\AfterImport;
+
+class VotersImport implements ToModel, WithHeadingRow, WithEvents
 {
+    private $voters = [];
+
     /**
     * @param array $row
     *
     * @return \Illuminate\Database\Eloquent\Model|null
     */
- public function model(array $row)
+    public function model(array $row)
     {
-        return new Voter([
+        $voter = new Voter([
             'name'       => $row['name'],
             'email'      => $row['email'],
             'password'   => Hash::make('123456'), // كلمة مرور افتراضية
@@ -28,5 +36,27 @@ class VotersImport implements ToModel, WithHeadingRow
             'status'     => 1,
             'has_voted'  => 0,
         ]);
+
+        $this->voters[] = $voter;
+
+        return $voter;
     }
-}
+
+    public function registerEvents(): array
+    {
+        return [
+            AfterImport::class => function(AfterImport $event) {
+                $admins = Admin::all();
+                $superAdmins = SuperAdmin::all();
+
+                foreach ($this->voters as $voter) {
+                    foreach ($admins as $admin) {
+                        $admin->notify(new NewVoterRegisteredNotification($voter));
+                    }
+                    foreach ($superAdmins as $superAdmin) {
+                        $superAdmin->notify(new NewVoterRegisteredNotification($voter));
+                    }
+                }
+            },
+        ];
+    }

@@ -17,7 +17,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Validator;
-use App\Models\NotificationRecipient;
 
 class VoterController extends Controller
 {
@@ -44,10 +43,7 @@ class VoterController extends Controller
         $pendingElectionsCount = Election::where('status', 'pending')->count();
 
         // New Notifications
-        $newNotificationsCount = NotificationRecipient::where("recipient_id", $voter->id)
-                                                ->where("recipient_type", "voter")
-                                                ->whereNull("read_at")
-                                                ->count();
+        $newNotificationsCount = $voter->unreadNotifications()->count();
 
         $stats = [
             'my_votes' => $myVotesCount,
@@ -71,12 +67,7 @@ class VoterController extends Controller
                                     ->limit(5)
                                     ->get();
 
-        $recentNotifications = NotificationRecipient::where("recipient_id", $voter->id)
-                                            ->where("recipient_type", "voter")
-                                            ->with("notification")
-                                            ->orderBy("created_at", "desc")
-                                            ->limit(5)
-                                            ->get();
+        $recentNotifications = $voter->notifications()->limit(5)->get();
 
         return view("voter.dashboard", compact(
             "stats", 

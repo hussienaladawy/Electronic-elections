@@ -13,6 +13,7 @@
             min-height: 100vh;
             display: flex;
             align-items: center;
+            padding: 1rem 0;
         }
         
         .login-container {
@@ -66,7 +67,7 @@
             border: 2px solid #e9ecef;
             border-radius: 10px;
             padding: 1rem;
-            margin: 0.5rem 0;
+            height: 100%;
             cursor: pointer;
             transition: all 0.3s ease;
         }
@@ -101,12 +102,33 @@
             color: #764ba2;
             text-decoration: underline;
         }
+
+        @media (max-width: 767.98px) {
+            .login-header {
+                padding: 1.5rem;
+            }
+            .login-form {
+                padding: 1.5rem;
+            }
+            .user-type-card {
+                padding: 0.75rem;
+            }
+            .user-type-card .fa-2x {
+                font-size: 1.5em;
+            }
+            .user-type-card h6 {
+                font-size: 0.9rem;
+            }
+            .user-type-card small {
+                font-size: 0.75rem;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-8 col-lg-6">
+            <div class="col-md-8 col-lg-7 col-xl-6">
                 <div class="login-container">
                     <!-- رأس النموذج -->
                     <div class="login-header">
@@ -145,8 +167,8 @@
                                     نوع المستخدم
                                 </label>
                                 
-                                <div class="row">
-                                    <div class="col-md-6">
+                                <div class="row g-2">
+                                    <div class="col-6">
                                         <label class="user-type-card" for="voter">
                                             <input type="radio" name="user_type" value="voter" id="voter" 
                                                    {{ old('user_type', 'voter') == 'voter' ? 'checked' : '' }}>
@@ -158,7 +180,7 @@
                                         </label>
                                     </div>
                                     
-                                    <div class="col-md-6">
+                                    <div class="col-6">
                                         <label class="user-type-card" for="assistant">
                                             <input type="radio" name="user_type" value="assistant" id="assistant"
                                                    {{ old('user_type') == 'assistant' ? 'checked' : '' }}>
@@ -170,7 +192,7 @@
                                         </label>
                                     </div>
                                     
-                                    <div class="col-md-6">
+                                    <div class="col-6">
                                         <label class="user-type-card" for="admin">
                                             <input type="radio" name="user_type" value="admin" id="admin"
                                                    {{ old('user_type') == 'admin' ? 'checked' : '' }}>
@@ -182,7 +204,7 @@
                                         </label>
                                     </div>
                                     
-                                    <div class="col-md-6">
+                                    <div class="col-6">
                                         <label class="user-type-card" for="super_admin">
                                             <input type="radio" name="user_type" value="super_admin" id="super_admin"
                                                    {{ old('user_type') == 'super_admin' ? 'checked' : '' }}>

@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AssistantController;
+use App\Http\Controllers\NotificationController;
+
 
 // مجموعة روتات المساعدين
 Route::prefix("assistant")->name("assistant.")->middleware(['auth:assistant'])->group(function () {
@@ -27,4 +29,14 @@ Route::prefix("assistant")->name("assistant.")->middleware(['auth:assistant'])->
         Route::get('/', [SuperAdminController::class, 'indexVoters'])->name('index');
         Route::get('/{voter}', [SuperAdminController::class, 'showVoter'])->name('show');
     });
+
+    // Notifications
+    Route::prefix('notifications')->name('notifications.')->group(function () {
+        Route::get('/', [NotificationController::class, 'index'])->name('index');
+        Route::get('/mark-as-read/{notification}', [NotificationController::class, 'markAsRead'])->name('markAsRead');
+        Route::post('/mark-all-as-read', [NotificationController::class, 'markAllAsRead'])->name('markAllAsRead');
+        Route::delete('/{notification}', [NotificationController::class, 'destroy'])->name('destroy');
+        Route::post('/delete-all-read', [NotificationController::class, 'deleteAllRead'])->name('deleteAllRead');
+    });
+  
 });

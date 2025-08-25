@@ -4,17 +4,18 @@ namespace App\Models;
 
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Notifications\Notifiable;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Spatie\Permission\Traits\HasRoles; // استدعاء الترايت
+use Illuminate\Notifications\Notifiable;
 
 
 class SuperAdmin extends Authenticatable
 {
 
-
-    use HasFactory, Notifiable, HasRoles; // تفعيل الترايت
+use HasFactory, HasRoles, Notifiable;
+     // تفعيل الترايت
 
 protected $guard_name = 'super_admin';
 
@@ -43,6 +44,14 @@ protected $guard_name = 'super_admin';
     ];
 
     // العلاقات
+    /**
+     * Get the entity's notifications.
+     */
+    public function notifications()
+    {
+        return $this->morphMany(Notification::class, 'notifiable')->orderBy('created_at', 'desc');
+    }
+
     public function createdBy()
     {
         return $this->belongsTo(SuperAdmin::class, 'created_by');

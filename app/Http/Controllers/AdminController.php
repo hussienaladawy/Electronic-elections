@@ -9,6 +9,7 @@ use App\Models\Election;
 use App\Models\Assistant;
 use App\Models\Candidate;
 use App\Models\SuperAdmin;
+use App\Notifications\NewVoterRegisteredNotification;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Hash;
@@ -21,6 +22,9 @@ class AdminController extends Controller
 {
     public function dashboard()
     {
+        $admin = auth('admin')->user();
+        $notifications = $admin->unreadNotifications; // Or ->notifications for all
+
         $totalElections = Election::count();
         $activeElections = Election::where("status", "active")->count();
         $completedElections = Election::where("status", "completed")->count();
@@ -36,7 +40,8 @@ class AdminController extends Controller
         return view("admin.dashboard", compact(
             "totalElections", "activeElections", "completedElections", "totalVotesCast",
             "totalAdmins", "totalAssistants", "totalCandidates", "totalVoters",
-            "latestElections", "latestVoters"
+            "latestElections", "latestVoters",
+            "notifications" // Pass notifications to the view
         ));
         
 
@@ -203,6 +208,17 @@ class AdminController extends Controller
             'status' => $request->status ?? true,
             'created_by' => auth('admin')->id(),
         ]);
+
+        // Notify SuperAdmins and Admins
+        $superAdmins = SuperAdmin::all();
+        foreach ($superAdmins as $superAdmin) {
+            $superAdmin->notify(new NewVoterRegisteredNotification($voter));
+        }
+
+        $admins = Admin::all();
+        foreach ($admins as $admin) {
+            $admin->notify(new NewVoterRegisteredNotification($voter));
+        }
 
         return redirect()->route('admin.voters.index')
             ->with('success', 'تم إضافة الناخب بنجاح');

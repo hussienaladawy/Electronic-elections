@@ -213,6 +213,12 @@
                             </a>
                         </div>
                         <div class="col-6 mb-3">
+                            <a href="{{ route('voter.notifications.index') }}" class="btn btn-danger btn w-100">
+                                <i class="fas fa-bell mb-1"></i><br>
+                                <small>الإشعارات</small>
+                            </a>
+                        </div>
+                        <div class="col-6 mb-3">
                             <a href="#" class="btn btn-warning btn w-100">
                                 <i class="fas fa-question-circle mb-1"></i><br>
                                 <small>المساعدة</small>
@@ -226,7 +232,7 @@
             <div class="card shadow mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                     <h6 class="m-0 font-weight-bold text-primary">الإشعارات الأخيرة</h6>
-                    <a href="#" class="btn btn-sm btn-outline-primary">
+                    <a href="{{ route('voter.notifications.index') }}" class="btn btn-sm btn-outline-primary">
                         عرض الكل
                     </a>
                 </div>

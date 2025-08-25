@@ -14,7 +14,6 @@ use App\Models\Election;
 use App\Models\Candidate;
 use App\Models\Vote;
 use App\Models\Notification;
-use App\Models\NotificationRecipient;
 
 class IntegratedController extends Controller
 {

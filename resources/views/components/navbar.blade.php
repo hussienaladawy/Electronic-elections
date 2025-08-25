@@ -29,6 +29,9 @@
                             <li><a class="dropdown-item" href="{{ route('super_admin.voters.index') }}">الناخبين</a></li>
                         </ul>
                     </li>
+                       <li class="nav-item">
+                        <a class="nav-link {{ request()->route() && request()->routeIs('super_admin.notifications.index.*') ? 'active' : '' }}" href="{{ route('super_admin.notifications.index') }}">الاشعارات</a>
+                    </li>
                     @endcan
                     @can('manage elections')
                     <li class="nav-item">

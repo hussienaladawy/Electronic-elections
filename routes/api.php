@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SuperAdminController;
+use App\Http\Controllers\Api\ApiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,9 +16,28 @@ use App\Http\Controllers\SuperAdminController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::post('/login', [ApiController::class, 'login']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/logout', [ApiController::class, 'logout']);
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
+
+    // Elections
+    Route::get('/elections', [ApiController::class, 'getElections']);
+    Route::get('/elections/{id}', [ApiController::class, 'getElection']);
+
+    // Voting
+    Route::post('/votes', [ApiController::class, 'castVote']);
+
+    // Voters
+    Route::apiResource('voters', ApiController::class)->except(['store', 'update', 'destroy']);
+    Route::post('voters', [ApiController::class, 'createVoter']);
+    Route::put('voters/{id}', [ApiController::class, 'updateVoter']);
+    Route::delete('voters/{id}', [ApiController::class, 'deleteVoter']);
 });
+
 
 // مجموعة روتات API للسوبرادمن
 Route::prefix('super-admin')->name('api.super_admin.')->group(function () {

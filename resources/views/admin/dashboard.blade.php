@@ -204,12 +204,56 @@
                             إضافة ناخب
                         </a>
                     </div>
+                    <div class="col-md-3 mb-3">
+                        <a href="{{ route('admin.notifications.index') }}" class="btn btn-danger w-100">
+                            <i class="bi bi-bell me-2"></i>
+                            عرض الإشعارات
+                        </a>
+                    </div>
                    
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<!-- الإشعارات الأخيرة -->
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="bi bi-bell me-2"></i>
+                    الإشعارات الأخيرة
+                </h5>
+            </div>
+            <div class="card-body">
+                @forelse($notifications as $notification)
+                    <div class="alert alert-light border-start border-4 {{ $notification->read_at ? 'border-secondary' : 'border-primary' }} p-3 mb-2 d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="mb-0">
+                                <strong>{{ $notification->data['message'] ?? 'New Notification' }}</strong>
+                                <br>
+                                <small class="text-muted">{{ $notification->created_at->diffForHumans() }}</small>
+                            </p>
+                        </div>
+                        <div>
+                            @if(isset($notification->data['link']))
+                                <a href="{{ $notification->data['link'] }}" class="btn btn-sm btn-info">View</a>
+                            @endif
+                            <a href="{{ route('admin.notifications.markAsRead', $notification->id) }}" class="btn btn-sm btn-success ms-2">Mark as Read</a>
+                        </div>
+                    </div>
+                @empty
+                    <div class="alert alert-info text-center">
+                        لا توجد إشعارات جديدة.
+                    </div>
+                @endforelse
+            </div>
+        </div>
+    </div>
+</div>
+
     <!-- Content Row -->
 
     <div class="row">

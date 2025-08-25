@@ -14,6 +14,8 @@ class AssistantController extends Controller
 {
     public function dashboard()
     {
+        $assistant = auth('assistant')->user();
+        $notifications = $assistant->unreadNotifications; // Or ->notifications for all
         
         $stats = [
             'voters_count'     => Voter::count(),
@@ -26,7 +28,7 @@ class AssistantController extends Controller
                                     ->limit(5)
                                     ->get();
 
-        return view('assistant.dashboard', compact('stats', 'recentElections'));
+        return view('assistant.dashboard', compact('stats', 'recentElections', 'notifications'));
     }
 
     public function showVoterImportForm()

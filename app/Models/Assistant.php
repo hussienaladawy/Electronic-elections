@@ -5,14 +5,14 @@ namespace App\Models;
 
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Notifications\Notifiable;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
 class Assistant extends Authenticatable
 {
-    use HasRoles;
-    use HasFactory, Notifiable, \Spatie\Permission\Traits\HasRoles;
+    use HasFactory, HasRoles, Notifiable;
 protected $guard_name = 'assistant';
     protected $table = 'assistants';
 
@@ -42,6 +42,14 @@ protected $guard_name = 'assistant';
     ];
 
     // العلاقات
+    /**
+     * Get the entity's notifications.
+     */
+    public function notifications()
+    {
+        return $this->morphMany(Notification::class, 'notifiable')->orderBy('created_at', 'desc');
+    }
+
     public function assignedAdmin()
     {
         return $this->belongsTo(Admin::class, 'assigned_admin_id');

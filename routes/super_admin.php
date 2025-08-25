@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ElectionController;
 use App\Http\Controllers\SuperAdminController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\SuperAdmin\PermissionController;
 
 // ==================== روتات السوبرادمن ====================
@@ -111,29 +112,20 @@ Route::prefix('super_admin')->name('super_admin.')->middleware(['auth:super_admi
         Route::get('/export', [ReportsController::class, 'exportReport'])->name('export');
     });
     
-    // نظام الإشعارات
-    Route::prefix('notifications')->name('notifications.')->group(function () {
-        Route::get('/', [NotificationController::class, 'index'])->name('index');
-        Route::get('/create', [NotificationController::class, 'create'])->name('create');
-        Route::post('/', [NotificationController::class, 'store'])->name('store');
-        Route::get('/{notification}', [NotificationController::class, 'show'])->name('show');
-        Route::get('/{notification}/edit', [NotificationController::class, 'edit'])->name('edit');
-        Route::put('/{notification}', [NotificationController::class, 'update'])->name('update');
-        Route::delete('/{notification}', [NotificationController::class, 'destroy'])->name('destroy');
-        
-        // إجراءات الإشعارات
-        Route::post('/{notification}/send', [NotificationController::class, 'send'])->name('send');
-        Route::post('/{notification}/cancel', [NotificationController::class, 'cancel'])->name('cancel');
-        
-        // إحصائيات الإشعارات
-        Route::get('/statistics/overview', [NotificationController::class, 'statistics'])->name('statistics');
-        Route::get('/export/report', [NotificationController::class, 'exportReport'])->name('export');
-    });
+   
 
     // إدارة الصلاحيات
     Route::get('permissions', [PermissionController::class, 'index'])->name('permissions.index');
     Route::post('permissions', [PermissionController::class, 'update'])->name('permissions.update');
      
+    // إدارة الإشعارات
+    Route::prefix('notifications')->name('notifications.')->group(function () {
+        Route::get('/', [NotificationController::class, 'index'])->name('index');
+        Route::get('/mark-as-read/{notification}', [NotificationController::class, 'markAsRead'])->name('markAsRead');
+        Route::post('/mark-all-as-read', [NotificationController::class, 'markAllAsRead'])->name('markAllAsRead');
+        Route::delete('/{notification}', [NotificationController::class, 'destroy'])->name('destroy');
+        Route::post('/delete-all-read', [NotificationController::class, 'deleteAllRead'])->name('deleteAllRead');
+    });
 });
 
     // إدارة الانتخابات

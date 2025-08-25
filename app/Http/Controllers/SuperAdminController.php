@@ -639,6 +639,9 @@ class SuperAdminController extends Controller
      */
     public function dashboard()
     {
+        $superAdmin = auth('super_admin')->user();
+        $notifications = $superAdmin->unreadNotifications; // Or ->notifications for all
+
         $stats = [
             'super_admins_count' => SuperAdmin::count(),
             'admins_count' => Admin::count(),
@@ -650,7 +653,7 @@ class SuperAdminController extends Controller
 
         ];
 
-        return view('super_admin.dashboard', compact('stats'));
+        return view('super_admin.dashboard', compact('stats', 'notifications'));
     }
 
     /**

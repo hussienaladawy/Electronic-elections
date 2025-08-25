@@ -70,7 +70,7 @@ Route::prefix('auth')->name('auth.')->group(function () {
 
 
 // روتات التصويت
-Route::prefix("voting")->name("voting.")->group(function () {
+Route::prefix("voting")->name("voting.")->middleware('auth:voter')->group(function () {
     Route::get("/", [VotingController::class, "availableElections"])->name("voting.index"); // Added voting.index route
     Route::get("/elections", [VotingController::class, "availableElections"])->name("elections");
      Route::get("/election/{election}", [VotingController::class, "showVotingPage"])->name("show");
